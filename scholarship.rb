@@ -205,3 +205,29 @@ def word_search_replace(stripped_text_array, dictionary)
 	changed_text_array = stripped_text_array
 	return changed_text_array
 end
+
+def restore_capitals(trans_text_array, index_array)
+	# this method takes in a translated array of strings and
+	#	a list of array indices to previously capitalized words
+	#	and returns the array of strings with capitalization
+
+	index_array.each {|i|
+		trans_text_array[i].capitalize!
+	}
+	cap_text_array = trans_text_array
+	return cap_text_array
+end
+
+def restore_punct(cap_text_array, punct_hash)
+	# method takes text array of capitalized words and hash containing
+	#	punctuation and indices and returns a text array with terminal
+	#	punctuation restored
+
+	punct_hash.each {|mark, indices|
+		indices.each {|loc|
+			cap_text_array[loc].concat(mark)
+		}
+	}
+
+	return cap_text_array
+end
