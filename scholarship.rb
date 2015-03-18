@@ -13,7 +13,7 @@ Include a menu for choosing options.
 =end
 
 complex_dictionary = {
-	"we're" 
+	"we're" => "we're"
 }
 
 # these are the 1000 most common words in English transformed into Boston English(Thanks, Wikipedia!) plus additions from Universal Hub.
@@ -54,7 +54,7 @@ single_word_dictionary = {
 	:wheah => "where",
 	:befoah => "before",
 	:cayah => "care",
-	:cayahful => "careful"
+	:cayahful => "careful",
 	:anymoah => "anymore",	
 	:fiah => "fire",
 	# :scayd => "scared",
@@ -93,11 +93,10 @@ single_word_dictionary = {
 	:murdah => "murder",
 	:longah => "longer",
 	:paypah => "paper",
-	:offah => "offer".
+	:offah => "offer",
 	:neithah => "neither",
 	:lawyah => "lawyer",
 	:covah => "cover",
-	:befoah => "before",
 	:fahget => "forget",
 	:fahgot => "forgot",
 	:fahgive => "forgive",
@@ -108,12 +107,87 @@ single_word_dictionary = {
 }
 
 syllable_dictionary = {
-	ar: "ah"
-	re: "ah"
-	er: "ah"
-	eh: "aw"
+	ar: "ah",
+	re: "ah",
+	er: "ah",
+	eh: "aw",
 
 }
 
+#declare important variables here
 
+def make_list(text)
+	raw_text_array = text.split(" ")
+	return raw_text_array
+end
+
+def capitals?(word)
+	# tests word to see if there's a capital letter
+	# returns boolean
+
+	if /[A-Z]/.match(word)
+		return true
+	else
+		return false
+	end
+end
+
+def find_store_capitals(text_array)
+	# this method takes a text array as an argument and 
+	# 	returns an array containing the indexes of all
+	# 	all the capitalized words in the text array
+
+	index_capital_words = []
+
+	text_array.each {|word|
+		if capitals?(word) == true
+			index_capital_words.push(text_array.index(word))
+		end
+	}
+	return index_capital_words
+end
+
+def term_punct?(word)
+	# method takes a word and returns
+	#	true if terminal punctuation (, . ? !) is present
+
+	if /[\,\.\?!]/.match(word)
+		return true
+	else
+		return false
+	end
+end
+
+def find_store_punctuation(text_array)
+	# method takes text array as argument and
+	#	returns hash with key value pairs as follows
+	#	"<punct>" => (index_1, index_2)
+
+	hash_term_punct = {}
+	comma_index = []
+	period_index = []
+	qm_index = []
+	em_index = []
+
+	text_array.each {|word|
+		case word
+			when /\,/
+				comma_index.push(text_array.index(word))
+			when /\./
+				period_index.push(text_array.index(word))
+			when /\?/
+				qm_index.push(text_array.index(word))
+			when /!/
+				em_index.push(text_array.index(word))
+			else
+			end
+	}
+	
+	hash_term_punct[","] = comma_index unless comma_index.empty?
+	hash_term_punct["."] = period_index unless period_index.empty?
+	hash_term_punct["?"] = qm_index unless qm_index.empty?
+	hash_term_punct["!"] = em_index unless em_index.empty?
+
+	return hash_term_punct
+end
 
