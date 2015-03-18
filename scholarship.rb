@@ -191,3 +191,17 @@ def find_store_punctuation(text_array)
 	return hash_term_punct
 end
 
+def word_search_replace(stripped_text_array, dictionary)
+	# method takes scrubbed text array and dictionary as hash
+	#	and replaces English words
+	#	with Boston words, returning changed text array
+
+	dictionary.each {|k, v|
+		stripped_text_array.each{|word|
+			word.gsub!(k.to_s, v)
+		}
+	}
+
+	changed_text_array = stripped_text_array
+	return changed_text_array
+end
