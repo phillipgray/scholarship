@@ -2,21 +2,21 @@
 
 =begin
 Include a menu for choosing options.
-* have an explicit/clean version exit commmand: gtfo vs i'm outta heah
-1) sentence translation based on hash
-2) pronunciation lookup
-	a) against hash table
-	b) attempt to translate by slicing string and looking for easily translatable chunks. e.g. er => ah, our/ore => oah
+	* have an explicit/clean version exit commmand: gtfo vs i'm outta heah
+	1) sentence translation based on hash
+	2) pronunciation lookup
+		a) against hash table
+		b) attempt to translate by slicing string and looking for easily translatable chunks. e.g. er => ah, our/ore => oah
 
 *use a hash with punctuation and numbers to store and recall punctuation during translation
 *find a way to preserve capitalization => maybe using an array of string indexes?
 =end
 
 complex_dictionary = {
-	"we're" => "we're"
+	:"water fountain" => "we're"
 }
 
-# these are the 1000 most common words in English transformed into Boston English(Thanks, Wikipedia!) plus additions from Universal Hub.
+# these are the 1000 most common words in English transformed into Boston English (Thanks, Wikipedia!) plus additions from Universal Hub.
 single_word_dictionary = {
 	wicked: "really",
 	cahds: "cards",
@@ -57,7 +57,7 @@ single_word_dictionary = {
 	:cayahful => "careful",
 	:anymoah => "anymore",	
 	:fiah => "fire",
-	# :scayd => "scared",
+	# :scayed => "scared",
 	:anywheah => "anywhere",
 	:somewheah => "somewhere",
 	:tieyid => "tired",
@@ -104,6 +104,23 @@ single_word_dictionary = {
 	:doctah => "doctor",
 	:victah => "victor",
 	:floah => "floor",
+	:frappe => "milkshake",
+	:grindah => "sub",
+	:uey => "u-turn",
+	:jimmies => "chocolate sprinkles",
+	:somahville => "somerville",
+	:medfid => "medford",
+	:milkshake => "flavored milk",
+	:beah => "beer",
+	:packie => "liquor store",
+	:chahm => "charm",
+	:rotary => "traffic circle",
+	:bubblah => "water fountain",
+	:southie => "south Boston",
+	:eastie => "east Boston",
+	:tonic => "soda",
+	:ahnt => "aunt",
+
 }
 
 syllable_dictionary = {
@@ -114,8 +131,9 @@ syllable_dictionary = {
 
 }
 
-#declare important variables here
+# declare important variables here
 
+# helper methods begin here
 def make_list(text)
 	raw_text_array = text.split(" ")
 	return raw_text_array
@@ -230,4 +248,23 @@ def restore_punct(cap_text_array, punct_hash)
 	}
 
 	return cap_text_array
+end
+
+def back_to_string(final_text_array)
+	final_text = final_text_array.join(" ")
+	return final_text
+end
+
+# main translator function with menu and flow control here
+
+def boston_translator()
+
+	script_exit = false
+
+	puts "Welcome to Bahston. We can be a little hahd to undahstand, so I figgahed I'd help you out."
+	while script_exit == false
+		
+		
+	end
+	
 end
