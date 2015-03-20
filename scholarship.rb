@@ -28,21 +28,21 @@ $single_word_dictionary = {
 	:figgahed => "figured", 
 	:figgah => "figure",
 	:picha => "picture",
-	:futcha => "future",
+	:futchah => "future",
 	:heah => "here", 
 	:theah => "there",
 	:moah => "more",
 	:wheah => "where",
 	:befoah => "before",
-	:cayah => "care",
 	:cayahful => "careful",
+	:cayah => "care",
 	:anymoah => "anymore",	
 	:fiah => "fire",
 	# :scayed => "scared",
 	:anywheah => "anywhere",
 	:somewheah => "somewhere",
 	:tieyid => "tired",
-	:entieya => "entire",
+	:entieyah => "entire",
 	:nevah => "never",
 	:ovah => "over",
 	:bettah => "better",
@@ -154,8 +154,10 @@ end
 
 def find_store_punctuation(text_array)
 	# method takes text array as argument and
-	#	returns hash with key value pairs as follows
+	#	returns list with two elements
+	#	1) a hash with key value pairs as follows
 	#	"<punct>" => (index_1, index_2)
+	#	2) array of original text stripped of punctuation
 
 	hash_term_punct = {}
 	comma_index = []
@@ -199,9 +201,7 @@ def word_search_replace(stripped_text_array, dictionary)
 	stripped_text_array.each {|word|
 		dictionary.each {|k, v|
 			word.gsub!(k.to_s, v)
-
 		}
-
 	}
 
 
@@ -335,6 +335,10 @@ def boston_translator()
 	end
 	
 end
+
+# line to run script
+
+boston_translator()
 
 # unused code for the future
 

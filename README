@@ -1,1 +1,24 @@
-Explanation
+=========================================
+Boston accent translator script readme
+=========================================
+
+This script attempts to translate words from Boston-accented English to standard English. It relies on a dictionary (as hash) that contains both entries from Universal Hub's glossary and from Wikipedia's word frequency lists. The general rule used to build the dictionary (where _ is e, o, or a): _r, _re, _ur  => ah. There are some notable (and weird spelling) exceptions:
+
+wicked figgah weyah tieyid futchah mah medfid laytah cayah entieyah
+
+And words from universal hub:
+
+uey jimmies frappe grindah medfid somahville milkshake packie chahm rotary bubblah
+southie eastie tonic ahnt
+
+The script can store and return initial capitalization and terminal punctuation marks (, . ! ?). The gsub method also allows for some compound word substitution, so past simple (-ed) and plural (-s/-es) forms of Bostonian English should translate correctly.
+
+========================================
+Why I want to attend Launch Academy
+========================================
+
+For me, programming is like getting to play with adult Legos. You can build any kind of application or script that you can imagine. And you never run out of the good pieces (or any piece for that matter). As I've been learning Python and now Ruby, I've been relying on MOOCs and tutorials and a ton of Google searches to help me build things. And that makes sense--the first thing you build with a Lego kit is the model that's in the instruction booklet. But I'm interested in learning to tweak what I build and eventually move to building apps entirely of my own design. 
+
+And this is where Launch Academy comes in. Immersion in the world of programming is the perfect way to start gaining that design expertise: learning what pieces are available or possible, having access to expert mentors, learning best practices, and building lots of apps with like-minded people.
+
+ 
