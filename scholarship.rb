@@ -1,28 +1,9 @@
-#ideas for scholarship submission
-
-=begin
-Include a menu for choosing options.
-	* have an explicit/clean version exit commmand: gtfo vs i'm outta heah
-	1) sentence translation based on hash
-	2) pronunciation lookup
-		a) against hash table
-		b) attempt to translate by slicing string and looking for easily translatable chunks. e.g. er => ah, our/ore => oah
-
-*use a hash with punctuation and numbers to store and recall punctuation during translation
-*find a way to preserve capitalization => maybe using an array of string indexes?
-=end
-
-complex_dictionary = {
-	:"water fountain" => "we're"
-}
-
 # these are the 1000 most common words in English transformed into Boston English (Thanks, Wikipedia!) plus additions from Universal Hub.
-single_word_dictionary = {
+$single_word_dictionary = {
 	wicked: "really",
 	cahds: "cards",
 	:didja => "did you", 
 	yoah: "your/you're", 
-	ah: "are/our",
 	yeah: "year/yeah",
 	staht: "start",
 	hahd: "hard",
@@ -43,8 +24,8 @@ single_word_dictionary = {
 	:bah => "bar",
 	:apaht => "apart",
 	:shuah => "sure",
-	:foah => "four/for",
 	:houah => "hour",
+	:figgahed => "figured", 
 	:figgah => "figure",
 	:picha => "picture",
 	:futcha => "future",
@@ -120,14 +101,8 @@ single_word_dictionary = {
 	:eastie => "east Boston",
 	:tonic => "soda",
 	:ahnt => "aunt",
-
-}
-
-syllable_dictionary = {
-	ar: "ah",
-	re: "ah",
-	er: "ah",
-	eh: "aw",
+	ah: "are/our",
+	:foah => "four/for",
 
 }
 
@@ -156,11 +131,12 @@ def find_store_capitals(text_array)
 	# 	all the capitalized words in the text array
 
 	index_capital_words = []
-
+	i = 0
 	text_array.each {|word|
 		if capitals?(word) == true
-			index_capital_words.push(text_array.index(word))
+			index_capital_words.push(i)
 		end
+		i += 1
 	}
 	return index_capital_words
 end
@@ -191,12 +167,16 @@ def find_store_punctuation(text_array)
 		case word
 			when /\,/
 				comma_index.push(text_array.index(word))
+				word.chomp!(",")
 			when /\./
 				period_index.push(text_array.index(word))
+				word.chomp!(".")
 			when /\?/
 				qm_index.push(text_array.index(word))
+				word.chomp!("?")
 			when /!/
 				em_index.push(text_array.index(word))
+				word.chomp!("!")
 			else
 			end
 	}
@@ -206,7 +186,9 @@ def find_store_punctuation(text_array)
 	hash_term_punct["?"] = qm_index unless qm_index.empty?
 	hash_term_punct["!"] = em_index unless em_index.empty?
 
-	return hash_term_punct
+	no_punct_array = text_array
+
+	return [hash_term_punct, no_punct_array]
 end
 
 def word_search_replace(stripped_text_array, dictionary)
@@ -214,11 +196,20 @@ def word_search_replace(stripped_text_array, dictionary)
 	#	and replaces English words
 	#	with Boston words, returning changed text array
 
-	dictionary.each {|k, v|
-		stripped_text_array.each{|word|
+	stripped_text_array.each {|word|
+		dictionary.each {|k, v|
 			word.gsub!(k.to_s, v)
+
 		}
+
 	}
+
+
+	# dictionary.each {|k, v|
+	# 	stripped_text_array.each{|word|
+	# 		word.gsub!(k.to_s, v)
+	# 	}
+	# }
 
 	changed_text_array = stripped_text_array
 	return changed_text_array
@@ -261,10 +252,113 @@ def boston_translator()
 
 	script_exit = false
 
-	puts "Welcome to Bahston. We can be a little hahd to undahstand, so I figgahed I'd help you out."
+	system "clear"
+
+	puts "Welcome to Boston. We can be a little hahd to undahstand, \nso I figgahed I'd help you out."
+
 	while script_exit == false
-		
+		puts "-------------------------------------------"
+		puts "Whaddaya wanna do?"
+		puts "'Lookup' a word or 'translate' somethin?\n'Help' if you're not sure what I can do.\nOr if you wanna leave, 'gtfo.'"
+		choice = gets.chomp.downcase
+
+		case choice
+
+		when "gtfo"
+			puts "See ya!"
+			script_exit = true
+
+			next
+
+		when "translate"
+			puts "-------------------------------------------"
+			puts "Alright, what didja say?"
+			original_text = gets.chomp
+			
+			puts "Gimme a sec..." + "\n"
+
+			original_text_array = make_list(original_text)
+			# puts original_text_array
+
+			capitals_array = find_store_capitals(original_text_array)
+			# puts capitals_array
+
+			down_text_array = original_text_array.each {|word| word.downcase!}
+			# puts down_text_array
+
+			punct_hash, bare_text = find_store_punctuation(down_text_array)[0], find_store_punctuation(down_text_array)[1]
+			# puts punct_hash
+			# puts bare_text
+
+			trans_text = word_search_replace(bare_text, $single_word_dictionary)
+
+			final_text = restore_punct(restore_capitals(trans_text, capitals_array), punct_hash)
+
+			puts "You said: " + back_to_string(final_text) + "\n"
+
+			next
+
+		when "lookup"
+			puts "-------------------------------------------"
+			puts "Whaddaya wanna lookup?"
+
+			boston_word = gets.chomp.downcase
+			
+			puts "Gimme a sec..." + "\n"
+			boston_word_singleton = boston_word.split
+			
+			final_word = word_search_replace(boston_word_singleton, $single_word_dictionary)
+
+			if back_to_string(final_word) == boston_word
+				puts "I've nevah heard the word #{boston_word} befoah. Heh. Must not exist."
+			else
+				puts "That means: " + back_to_string(final_word)
+			end
+
+			
+			next
+
+		when "help"
+			puts "\n"
+			puts "So I'm a pretty smaht translatah. I know most of the most common English words\nas a Bostonian would say them. \nBasic spelling rules: ar, re, er, => ah.\nI also know some of the words from Universal hub,\nlike grindah, jimmies, and wicked.\nSo test me out, and see what I know."
+			puts "\n"
+
+		else
+			puts "Don't be fresh. That's not an option. Try again" + "\n"
+
+			next
+
+		end
+
+
 		
 	end
 	
 end
+
+# unused code for the future
+
+# syllable_dictionary = {
+# 	ar: "ah",
+# 	re: "ah",
+# 	er: "ah",
+# 	eh: "aw",
+# }
+# complex_dictionary = {
+# 	:"water fountain" => "we're"
+# }
+
+# old notes
+# ideas for scholarship submission
+
+=begin
+Include a menu for choosing options.
+	* have an explicit/clean version exit commmand: gtfo vs i'm outta heah
+	1) sentence translation based on hash
+	2) pronunciation lookup
+		a) against hash table
+		b) attempt to translate by slicing string and looking for easily translatable chunks. e.g. er => ah, our/ore => oah
+
+*use a hash with punctuation and numbers to store and recall punctuation during translation
+*find a way to preserve capitalization => maybe using an array of string indexes?
+=end
